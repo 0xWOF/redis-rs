@@ -336,7 +336,7 @@ enum ActualConnection {
 }
 
 #[cfg(feature = "rustls")]
-struct NoCertificateVerification;
+pub(crate) struct NoCertificateVerification;
 
 #[cfg(feature = "rustls")]
 impl rustls::client::ServerCertVerifier for NoCertificateVerification {
