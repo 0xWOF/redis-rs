@@ -1,4 +1,4 @@
-use crate::cluster::ClusterConnection;
+use crate::cluster::{ClusterConnection, TlsMode};
 use crate::connection::{ConnectionAddr, ConnectionInfo, IntoConnectionInfo};
 use crate::types::{ErrorKind, RedisError, RedisResult};
 
@@ -8,6 +8,7 @@ pub(crate) struct ClusterParams {
     pub(crate) password: Option<String>,
     pub(crate) username: Option<String>,
     pub(crate) read_from_replicas: bool,
+    pub(crate) tls_mode: Option<TlsMode>,
 }
 
 /// Used to configure and build a [`ClusterClient`].
