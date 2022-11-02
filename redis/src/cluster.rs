@@ -65,8 +65,11 @@ pub use crate::cluster_pipeline::{cluster_pipe, ClusterPipeline};
 type SlotMap = BTreeMap<u16, [String; 2]>;
 
 #[derive(Clone, Copy)]
-enum TlsMode {
+/// See [ConnectionAddr](ConnectionAddr::TcpTls::insecure).
+pub enum TlsMode {
+    /// Tls Secure mode
     Secure,
+    /// Tls Insecure mode
     Insecure,
 }
 
