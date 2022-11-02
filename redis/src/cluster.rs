@@ -74,16 +74,6 @@ pub enum TlsMode {
     Insecure,
 }
 
-impl TlsMode {
-    fn from_insecure_flag(insecure: bool) -> TlsMode {
-        if insecure {
-            TlsMode::Insecure
-        } else {
-            TlsMode::Secure
-        }
-    }
-}
-
 /// This is a connection of Redis cluster.
 pub struct ClusterConnection {
     initial_nodes: Vec<ConnectionInfo>,
