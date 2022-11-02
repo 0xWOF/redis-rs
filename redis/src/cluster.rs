@@ -94,7 +94,7 @@ pub struct ClusterConnection {
     password: Option<String>,
     read_timeout: RefCell<Option<Duration>>,
     write_timeout: RefCell<Option<Duration>>,
-    tls: Option<TlsMode>,
+    tls_mode: Option<TlsMode>,
 }
 
 impl ClusterConnection {
@@ -112,7 +112,7 @@ impl ClusterConnection {
             read_timeout: RefCell::new(None),
             write_timeout: RefCell::new(None),
             #[cfg(feature = "tls")]
-            tls: {
+            tls_mode: {
                 if initial_nodes.is_empty() {
                     None
                 } else {
@@ -129,7 +129,7 @@ impl ClusterConnection {
                 }
             },
             #[cfg(not(feature = "tls"))]
-            tls: None,
+            tls_mode: None,
             initial_nodes: initial_nodes.to_vec(),
         };
         connection.create_initial_connections()?;
@@ -297,7 +297,7 @@ impl ClusterConnection {
         let mut samples = connections.values_mut().choose_multiple(&mut rng, len);
 
         for conn in samples.iter_mut() {
-            if let Ok(mut slots_data) = get_slots(conn, self.tls) {
+            if let Ok(mut slots_data) = get_slots(conn, self.tls_mode) {
                 slots_data.sort_by_key(|s| s.start());
                 let last_slot = slots_data.iter().try_fold(0, |prev_end, slot_data| {
                     if prev_end != slot_data.start() {
@@ -504,7 +504,7 @@ impl ClusterConnection {
                         if kind == ErrorKind::Ask {
                             redirected = err
                                 .redirect_node()
-                                .map(|(node, _slot)| build_connection_string(node, None, self.tls));
+                                .map(|(node, _slot)| build_connection_string(node, None, self.tls_mode));
                             is_asking = true;
                         } else if kind == ErrorKind::Moved {
                             // Refresh slots.
@@ -514,7 +514,7 @@ impl ClusterConnection {
                             // Request again.
                             redirected = err
                                 .redirect_node()
-                                .map(|(node, _slot)| build_connection_string(node, None, self.tls));
+                                .map(|(node, _slot)| build_connection_string(node, None, self.tls_mode));
                             is_asking = false;
                             continue;
                         } else if kind == ErrorKind::TryAgain || kind == ErrorKind::ClusterDown {
