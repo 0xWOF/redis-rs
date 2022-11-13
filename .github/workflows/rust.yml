@@ -32,8 +32,8 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          /usr/bin/redis-cli
-          /usr/bin/redis-server
+          $HOME/.local/bin/redis-cli
+          $HOME/.local/bin/redis-server
         key: ${{ runner.os }}-redis
 
     - name: Install redis
@@ -42,7 +42,8 @@ jobs:
         sudo apt-get update
         wget https://github.com/redis/redis/archive/${{ matrix.redis }}.tar.gz;
         tar -xzvf ${{ matrix.redis }}.tar.gz;
-        pushd redis-${{ matrix.redis }} && BUILD_TLS=yes make && sudo mv src/redis-server src/redis-cli /usr/bin/ && popd;
+        mkdir -p $HOME/.local/bin/;
+        pushd redis-${{ matrix.redis }} && BUILD_TLS=yes make && sudo mv src/redis-server src/redis-cli $HOME/.local/bin/ && popd;
         echo $PATH
 
     - name: Install latest nightly
