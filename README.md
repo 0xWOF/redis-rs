@@ -63,6 +63,9 @@ redis = { version = "0.22.3", features = ["async-std-comp"] }
 ## TLS Support
 
 To enable TLS support, you need to use the relevant feature entry in your Cargo.toml.
+Currently, `native-tls` and `rustls` are supported.
+
+To use `native-tls`:
 
 ```
 redis = { version = "0.22.3", features = ["tls-native-tls"] }
@@ -72,6 +75,15 @@ redis = { version = "0.22.3", features = ["tokio-native-tls-comp"] }
 
 # if you use async-std
 redis = { version = "0.22.3", features = ["async-std-native-tls-comp"] }
+```
+
+To use `rustls`:
+
+```
+redis = { version = "0.22.3", features = ["tls-rustls"] }
+
+# if you use tokio
+redis = { version = "0.22.3", features = ["tokio-rustls-comp"] }
 ```
 
 then you should be able to connect to a redis instance using the `rediss://` URL scheme:
