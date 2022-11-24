@@ -19,7 +19,7 @@ use ::tokio::{
     sync::{mpsc, oneshot},
 };
 
-#[cfg(feature = "tls")]
+#[cfg(feature = "tls-native-tls")]
 use native_tls::TlsConnector;
 
 #[cfg(any(feature = "tokio-comp", feature = "async-std-comp"))]
@@ -62,7 +62,7 @@ pub(crate) trait RedisRuntime: AsyncStream + Send + Sync + Sized + 'static {
     async fn connect_tcp(socket_addr: SocketAddr) -> RedisResult<Self>;
 
     // Performs a TCP TLS connection
-    #[cfg(any(feature = "tls", feature = "rustls"))]
+    #[cfg(any(feature = "tls-native-tls", feature = "tls-rustls"))]
     async fn connect_tcp_tls(
         hostname: &str,
         socket_addr: SocketAddr,
@@ -462,7 +462,7 @@ pub(crate) async fn connect_simple<T: RedisRuntime>(
             <T>::connect_tcp(socket_addr).await?
         }
 
-        #[cfg(any(feature = "tls", feature = "rustls"))]
+        #[cfg(any(feature = "tls-native-tls", feature = "tls-rustls"))]
         ConnectionAddr::TcpTls {
             ref host,
             port,
@@ -472,7 +472,7 @@ pub(crate) async fn connect_simple<T: RedisRuntime>(
             <T>::connect_tcp_tls(host, socket_addr, insecure).await?
         }
 
-        #[cfg(not(any(feature = "tls", feature = "rustls")))]
+        #[cfg(not(any(feature = "tls-native-tls", feature = "tls-rustls")))]
         ConnectionAddr::TcpTls { .. } => {
             fail!((
                 ErrorKind::InvalidClientConfig,
