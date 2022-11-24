@@ -91,9 +91,9 @@ impl ClusterConnection {
             password: cluster_params.password,
             read_timeout: RefCell::new(None),
             write_timeout: RefCell::new(None),
-            #[cfg(feature = "tls-native-tls")]
+            #[cfg(any(feature = "tls-native-tls", feature = "tls-rustls"))]
             tls: cluster_params.tls,
-            #[cfg(not(feature = "tls-native-tls"))]
+            #[cfg(not(any(feature = "tls-native-tls", feature = "tls-rustls")))]
             tls: None,
             initial_nodes: initial_nodes.to_vec(),
         };
