@@ -91,7 +91,10 @@ impl ClusterConnection {
             password: cluster_params.password,
             read_timeout: RefCell::new(None),
             write_timeout: RefCell::new(None),
+            #[cfg(feature = "tls-native-tls")]
             tls: cluster_params.tls,
+            #[cfg(not(feature = "tls-native-tls"))]
+            tls: None,
             initial_nodes: initial_nodes.to_vec(),
         };
         connection.create_initial_connections()?;
