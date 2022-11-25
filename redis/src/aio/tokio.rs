@@ -16,7 +16,7 @@ use tokio::{
 };
 
 #[cfg(all(feature = "tls-native-tls", not(feature = "tls-rustls")))]
-use super::TlsConnector;
+use native_tls::TlsConnector;
 
 #[cfg(feature = "tls-rustls")]
 use crate::connection::create_rustls_config;
