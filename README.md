@@ -84,6 +84,9 @@ redis = { version = "0.22.3", features = ["tls-rustls"] }
 
 # if you use tokio
 redis = { version = "0.22.3", features = ["tokio-rustls-comp"] }
+
+# if you use async-std
+redis = { version = "0.22.3", features = ["async-std-rustls-comp"] }
 ```
 
 then you should be able to connect to a redis instance using the `rediss://` URL scheme:
